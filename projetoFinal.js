@@ -45,30 +45,33 @@ function topicoToDom(topico) {
 const adicionarTopico = e => {
     e && e.preventDefault();
     const topicoDOM = document.getElementById('topico');
-    Topico(110683, topicoDOM.value).then(() => {
+    const topicoValue = topicoDOM.value;
+    topicoDOM.value = '';
+    Topico(110683, topicoValue).then(() => {
         totalRecursos++;
         getRecurso(110683, totalRecursos)
             .then(topico => {
                 topico.index = totalRecursos;
                 return topico;
             })
-            .then(topicoToDom)
-            .then(() => (topicoDOM.value = ''));
+            .then(topicoToDom);
     });
 };
 
 const adicionarComentario = (e, idUsuario, idRecurso) => {
     e && e.preventDefault();
     const comentarioDOM = e.target.parentNode.getElementsByTagName('input')[0];
-    Comentario(idUsuario, idRecurso, 0, comentarioDOM.value).then(() => {
-        //   totalRecursos++;
-        //       getRecurso(110683, totalRecursos)
-        //        .then(comentario => {
-        //            comentario.index = totalRecursos;
-        //            return comentario;
-        //        })
-        //        .then(topicoToDom)
-        //       .then(() => (comentario.value = ''));
+    const comentarioValue = comentarioDOM.value;
+    comentarioDOM.value = '';
+    Comentario(idUsuario, idRecurso, 0, comentarioValue).then(() => {
+        totalRecursos++;
+        getRecurso(110683, totalRecursos)
+            .then(comentario => {
+                comentario.index = totalRecursos;
+                return comentario;
+            })
+            .then(comentario => comentariosToDom([comentario]))
+            .then(console.log);
     });
 };
 
