@@ -1,9 +1,3 @@
-main {
-    width: 90%;
-    margin: auto;
-    padding-bottom: 20px;
-}
-
 form {
     display: flex;
     justify-content: center;
