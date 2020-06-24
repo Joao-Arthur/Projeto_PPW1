@@ -51,12 +51,16 @@ const adicionarTopico = e => {
     topicoDOM.value = '';
     Topico(110683, topicoValue).then(() => {
         totalRecursos++;
-        getRecurso(110683, totalRecursos)
-            .then(topico => {
-                topico.index = totalRecursos;
-                return topico;
-            })
-            .then(topicoToDom);
+        setTimeout(
+            () =>
+                getRecurso(110683, totalRecursos)
+                    .then(topico => {
+                        topico.index = totalRecursos;
+                        return topico;
+                    })
+                    .then(topicoToDom),
+            1000
+        );
     });
 };
 
@@ -67,17 +71,21 @@ const adicionarComentario = (e, idUsuario, idRecurso) => {
     comentarioDOM.value = '';
     Comentario(idUsuario, idRecurso, 0, comentarioValue).then(() => {
         totalRecursos++;
-        getRecurso(110683, totalRecursos)
-            .then(comentario => {
-                comentario.index = totalRecursos;
-                return comentario;
-            })
-            .then(comentario =>
-                appendElements(
-                    document.getElementById(comentario.idTopico),
-                    comentariosToDom([comentario])
-                )
-            );
+        setTimeout(
+            () =>
+                getRecurso(110683, totalRecursos)
+                    .then(comentario => {
+                        comentario.index = totalRecursos;
+                        return comentario;
+                    })
+                    .then(comentario =>
+                        appendElements(
+                            document.getElementById(comentario.idTopico),
+                            comentariosToDom([comentario])
+                        )
+                    ),
+            1000
+        );
     });
 };
 
