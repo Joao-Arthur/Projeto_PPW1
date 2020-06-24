@@ -1,15 +1,6 @@
 const MATRICULA = 110683;
 let totalRecursos = -1;
 
-function comentariosToDom(comentarios) {
-    return appendElements(
-        createDOMElement('div'),
-        comentarios.map(comentario =>
-            createDOMElement('p', { textContent: comentario.conteudo })
-        )
-    );
-}
-
 function topicoToDom(topico) {
     appendElementsContainer(
         document.getElementById('publicacoes'),
@@ -37,10 +28,21 @@ function topicoToDom(topico) {
                         )
                 })
             ]),
-            topico.comentarios ? comentariosToDom(topico.comentarios) : null
-        ].filter(e => e)
+            appendElements(
+                createDOMElement('div', { id: topico.idTopico }),
+                topico.comentarios ? comentariosToDom(topico.comentarios) : []
+            )
+        ].filter(Boolean)
     );
 }
+
+const comentariosToDom = comentarios =>
+    comentarios.map(comentario =>
+        createDOMElement('p', {
+            textContent: comentario.conteudo,
+            id: comentario.idComentario
+        })
+    );
 
 const adicionarTopico = e => {
     e && e.preventDefault();
@@ -70,8 +72,12 @@ const adicionarComentario = (e, idUsuario, idRecurso) => {
                 comentario.index = totalRecursos;
                 return comentario;
             })
-            .then(comentario => comentariosToDom([comentario]))
-            .then(console.log);
+            .then(comentario =>
+                appendElements(
+                    document.getElementById(comentario.idTopico),
+                    comentariosToDom([comentario])
+                )
+            );
     });
 };
 

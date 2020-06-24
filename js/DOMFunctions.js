@@ -3,6 +3,7 @@ function createDOMElement(tagName, attributes = {}) {
     if (attributes.textContent) elemento.textContent = attributes.textContent;
     if (attributes.onClick) elemento.onclick = attributes.onClick;
     if (attributes.placeHolder) elemento.placeholder = attributes.placeHolder;
+    if (attributes.id) elemento.id = attributes.id;
     return elemento;
 }
 
