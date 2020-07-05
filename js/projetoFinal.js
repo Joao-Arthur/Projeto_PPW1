@@ -49,18 +49,11 @@ const adicionarTopico = e => {
     const topicoDOM = document.getElementById('topico');
     const topicoValue = topicoDOM.value;
     topicoDOM.value = '';
-    Topico(110683, topicoValue).then(() => {
+    const topico = Topico(110683, topicoValue);
+    postRecurso(110683, topico).then(() => {
         totalRecursos++;
-        setTimeout(
-            () =>
-                getRecurso(110683, totalRecursos)
-                    .then(topico => {
-                        topico.index = totalRecursos;
-                        return topico;
-                    })
-                    .then(topicoToDom),
-            1000
-        );
+        topico.index = totalRecursos;
+        topicoToDom(topico);
     });
 };
 
@@ -69,22 +62,13 @@ const adicionarComentario = (e, idUsuario, idRecurso) => {
     const comentarioDOM = e.target.parentNode.getElementsByTagName('input')[0];
     const comentarioValue = comentarioDOM.value;
     comentarioDOM.value = '';
-    Comentario(idUsuario, idRecurso, 0, comentarioValue).then(() => {
+    const comentario = Comentario(idUsuario, idRecurso, 0, comentarioValue);
+    postRecurso(idUsuario, comentario).then(() => {
         totalRecursos++;
-        setTimeout(
-            () =>
-                getRecurso(110683, totalRecursos)
-                    .then(comentario => {
-                        comentario.index = totalRecursos;
-                        return comentario;
-                    })
-                    .then(comentario =>
-                        appendElements(
-                            document.getElementById(comentario.idTopico),
-                            comentariosToDom([comentario])
-                        )
-                    ),
-            1000
+        comentario.index = totalRecursos;
+        appendElements(
+            document.getElementById(comentario.idTopico),
+            comentariosToDom([comentario])
         );
     });
 };
@@ -126,7 +110,7 @@ document
 
 let scrollTimeout;
 
-window.onscroll = function () {
+window.onscroll = () => {
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(() => {
         document.querySelector('header').className =

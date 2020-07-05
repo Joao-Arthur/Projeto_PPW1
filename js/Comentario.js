@@ -1,5 +1,5 @@
-function Comentario(idUsuario, idTopico, idComentarioPai, conteudo) {
-    const comentario = Object.freeze({
+const Comentario = (idUsuario, idTopico, idComentarioPai, conteudo) =>
+    Object.freeze({
         tipoRecurso: tipos.COMENTARIO,
         idTopico,
         idComentario: new Date().valueOf(),
@@ -7,6 +7,3 @@ function Comentario(idUsuario, idTopico, idComentarioPai, conteudo) {
         idUsuario,
         conteudo
     });
-
-    return postRecurso(idUsuario, comentario);
-}
