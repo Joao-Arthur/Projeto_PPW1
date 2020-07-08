@@ -33,7 +33,7 @@ function topicoToDom(topico) {
             appendElements(
                 createDOMElement('div', { id: topico.idTopico }),
                 topico.comentarios
-                    ? comentariosToTopico(topico.comentarios)
+                    ? comentariosToTopico(topico.comentarios).flat()
                     : []
             )
         ].filter(Boolean)
@@ -48,16 +48,27 @@ const comentariosToTopico = comentarios => {
         comentario => comentario.idComentarioPai !== 0
     );
 
-    return comentariosPai.map(comentarioPai => {
-        const filhos = comentariosFilho.filter(
+    const appendChildren = (comentarioPai, comentarios) => {
+        const filhos = comentarios.filter(
             comentario =>
                 comentario.idComentarioPai === comentarioPai.idComentario
         );
-        return appendElements(
-            comentariosToDom([comentarioPai])[0],
-            comentariosToDom(filhos)
-        );
-    });
+        return filhos.length
+            ? filhos.map(filho => {
+                  const children = appendChildren(filho, comentarios);
+
+                  console.log(children);
+                  return appendElements(
+                      comentariosToDom([comentarioPai])[0],
+                      Array.isArray(children) ? children : [children]
+                  );
+              })
+            : comentariosToDom([comentarioPai])[0];
+    };
+
+    return comentariosPai.map(comentarioPai =>
+        appendChildren(comentarioPai, comentariosFilho)
+    );
 };
 
 const comentariosToDom = comentarios =>
